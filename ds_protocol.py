@@ -12,23 +12,43 @@ import json
 import time
 from collections import namedtuple
 timestamp = str(time.time())
-DataTuple = namedtuple('DataTuple', ['foo','baz'])
+DataTuple = namedtuple('DataTuple', ['type', 'message'])
+import test_ds_message_protocol
+
+def json_to_dict(json_msg: str) -> dict:
+    """
+    Convert a JSON message to a dictionary.
+    """
+    try:
+        return json.loads(json_msg)
+    except json.JSONDecodeError:
+        print("Json cannot be decoded.1")
+        return {}
+
+def json_to_list(json_msg: str) -> list:
+    """
+    Convert a JSON message to a list.
+    """
+    try:
+        return json.loads(json_msg)
+    except json.JSONDecodeError:
+        print("Json cannot be decoded.2")
+        return []
 
 
-def extract_json(json_msg:str) -> DataTuple:
-  '''
-  Call the json.loads function on a json string and convert it to a DataTuple object
-  
-  TODO: replace the pseudo placeholder keys with actual DSP protocol keys
-  '''
-  try:
-    json_obj = json.loads(json_msg)
-    foo = json_obj['foo']
-    baz = json_obj['bar']['baz']
-  except json.JSONDecodeError:
-    print("Json cannot be decoded.")
+def extract_json(json_msg: str) -> DataTuple:
+    '''
+    Call the json.loads function on a json string and convert it to a DataTuple object
+    '''
+    try:
+        json_obj = json.loads(json_msg)
+        response = json_obj.get('response', {})
+        if 'type' in response and 'message' in response:
+            return DataTuple(response['type'], response['message'])
+    except json.JSONDecodeError:
+        print("Json cannot be decoded.3")
 
-  return DataTuple(foo, baz)
+    return None
 
 
 def format_for_json(action, username, password, user_token=None, message=None, bio=None, recipient=None):
@@ -43,7 +63,7 @@ def format_for_json(action, username, password, user_token=None, message=None, b
     })
   elif action == 'post':
         if not user_token:
-            raise ValueError("no user token breh go get that shi")
+            raise ValueError("no user token1")
         formated = ({
             "token": user_token,
             "post": {
@@ -53,7 +73,7 @@ def format_for_json(action, username, password, user_token=None, message=None, b
         })
   elif action == 'bio':
         if not user_token:
-            raise ValueError("go get it bruh bruh")
+            raise ValueError("no user token2")
         formated = json.dumps({
             "token": user_token,
             "bio": {
@@ -63,7 +83,7 @@ def format_for_json(action, username, password, user_token=None, message=None, b
         })
   elif action == 'directmessage':
         if not user_token:
-            raise ValueError("no user token")
+            raise ValueError("no user token3")
         if message:
             formated = json.dumps({
                 "token": user_token,
@@ -75,3 +95,4 @@ def format_for_json(action, username, password, user_token=None, message=None, b
             })
 
   return formated
+  

@@ -4,6 +4,7 @@ from Profile import Profile, Post
 from ds_client import send
 import administration as admin
 import ui as ui
+import a5 as a5
 
 
 server_adress = "168.235.86.101"
@@ -13,7 +14,7 @@ temp_path = ''
 
 def start():
     ui.administration(1)
-    ui.command()
+    ui.handle_command()
 
 
 def user():
@@ -38,7 +39,7 @@ def administration(a):
     return administrator
 
 
-def command():
+def handle_command():
     command = input("please enter command:  ")
     command_type = command[0:1]
     if command == 'admin':
@@ -46,7 +47,7 @@ def command():
     elif command == 'user':
         administrator == 0
         user()
-        command()
+        handle_command()
     else:
         if command_type == "L":
             list_files_command(command)
@@ -54,17 +55,17 @@ def command():
             quit()
         elif command_type == "C":
             create_file(command)
-            command()
+            handle_command()
         elif command_type == "D":
             del_file(command)
         elif command_type == "R":
             read_file(command)
         elif command_type == "H":
             user_mod.comm_list()
-            command()
+            handle_command()
         elif command_type == "O":
             open_file(command)
-            command()
+            handle_command()
         elif command_type == 'E':
             edit_file(command)
         elif command_type == "P":
@@ -107,7 +108,7 @@ def list_files(a):
         else:
             if administrator:
                 print("please enter a valid path")
-                command()
+                handle_command()
             else:
                 user_mod.path_help()
     else:
@@ -167,7 +168,7 @@ def list_items(path, recursive=False, files_only=False, search_file=None, ending
                 print(directory)
     except FileNotFoundError:
         print(f"the path {path} doesnt exist")
-    command()
+    handle_command()
 
 
 def create_file(a):
@@ -214,7 +215,7 @@ def create_file(a):
         f = open(line, 'a')
         temp_path = file_path
     print(f'{file_path} OPENED')
-    print(f"this is the way  {file_path}")
+    print(f"path: {file_path}")
     return temp_path
 
 
@@ -248,7 +249,7 @@ def del_file(a):
         else:
             print("can only delete dsu files")
 
-    command()
+    handle_command()
 
 
 def read_file(a):
@@ -283,7 +284,7 @@ def read_file(a):
         else:
             print("please enter a file with \".dsu\" extention")
     print("")
-    command()
+    handle_command()
 
 
 def open_file(a):
@@ -304,7 +305,7 @@ def open_file(a):
         for line in f:
             print(" ")
             print(line.strip())
-    command()
+    handle_command()
     return temp_path
         
 
@@ -395,7 +396,7 @@ def edit_file(a):
                 message = post_content
                 send(serv, port, username, password, message)
 
-    command()
+    handle_command()
 
 
 def print_data(command):
@@ -429,7 +430,7 @@ def print_data(command):
         print("Posts:")
         for i, post in enumerate(profile._posts):
             print(f"  Post {i}: {post}")
-    command()
+    handle_command()
 
 if __name__ == "__main__":
     start()   
