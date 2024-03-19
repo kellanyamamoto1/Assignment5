@@ -31,9 +31,9 @@ def extract_json(json_msg:str) -> DataTuple:
   return DataTuple(foo, baz)
 
 
-def format_for_json(action_type, username, password, user_token=None, message=None, bio=None):
+def format_for_json(action, username, password, user_token=None, message=None, bio=None):
   formated = None
-  if action_type == "join":
+  if action == "join":
     formated = json.dumps({
       "join": {
         "username": username,
@@ -41,7 +41,7 @@ def format_for_json(action_type, username, password, user_token=None, message=No
         "tokens": user_token
       }
     })
-  elif action_type == 'post':
+  elif action == 'post':
         if not user_token:
             raise ValueError("no user token breh go get that shi")
         formated = ({
@@ -51,7 +51,7 @@ def format_for_json(action_type, username, password, user_token=None, message=No
                 "timestamp": timestamp
             }
         })
-  elif action_type == 'bio':
+  elif action == 'bio':
         if not user_token:
             raise ValueError("go get it bruh bruh")
         formated = json.dumps({
