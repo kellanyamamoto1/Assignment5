@@ -4,9 +4,7 @@ from Profile import Profile, Post
 from ds_client import send
 import administration as admin
 import ui as ui
-import a4 as a4
-import OpenWeather as WEA
-import LastFM as LFM
+
 
 server_adress = "168.235.86.101"
 server_port = "3021"

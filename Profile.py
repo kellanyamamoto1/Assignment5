@@ -1,7 +1,6 @@
 import json, time
 from pathlib import Path
-from OpenWeather import OpenWeather
-from LastFM import LastFM
+
 
 import json, time
 from pathlib import Path

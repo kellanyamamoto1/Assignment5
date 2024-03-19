@@ -31,7 +31,7 @@ def extract_json(json_msg:str) -> DataTuple:
   return DataTuple(foo, baz)
 
 
-def format_for_json(action, username, password, user_token=None, message=None, bio=None):
+def format_for_json(action, username, password, user_token=None, message=None, bio=None, recipient=None):
   formated = None
   if action == "join":
     formated = json.dumps({
@@ -61,5 +61,17 @@ def format_for_json(action, username, password, user_token=None, message=None, b
                 "timestamp": timestamp
             }
         })
+  elif action == 'directmessage':
+        if not user_token:
+            raise ValueError("no user token")
+        if message:
+            formated = json.dumps({
+                "token": user_token,
+                "directmessage": {
+                    "entry": message,
+                    "recipient": recipient,
+                    "timestamp": timestamp
+                }
+            })
 
   return formated
