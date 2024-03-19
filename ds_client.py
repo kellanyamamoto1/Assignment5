@@ -15,7 +15,7 @@ server_port =  3021
 timestamp = str(time.time())
 
 
-def send(server:str, port:int, username:str, password:str, message:str, bio:str=None):
+def send(server:str, port:int, username:str, password:str, message:str, bio:str=None, ):
   '''
   The send function joins a ds server and sends a message, bio, or both
 
@@ -53,6 +53,12 @@ def send(server:str, port:int, username:str, password:str, message:str, bio:str=
           action = "bio"
           formatted_message = ds_protocol.format_for_json(action, username, password,user_token=token, message=message, bio=bio)
           print(formatted_message)
+          '''
+      elif directmessage: 
+          action = "directmessage"
+          formatted_message = ds_protocol.format_for_json(action, username, password,user_token=token, message=message, bio=bio)
+          print(formatted_message)
+          '''
       else:
           action = "join"
           formatted_message = ds_protocol.format_for_json(action, username, password,user_token=token, message=message, bio=bio)
@@ -67,7 +73,7 @@ def send(server:str, port:int, username:str, password:str, message:str, bio:str=
       response_json = json.loads(response)
       print(response_json)
       if "response" in response_json:
-                if response_json["response"]["type"] == "sent":
+                if response_json["response"]["type"] == "ok":
                     return True
                 else:
                     error_message = response_json["response"]["message"]

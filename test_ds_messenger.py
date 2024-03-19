@@ -1,58 +1,57 @@
 
 import ds_protocol
-
-# Test message for direct message sent successfully
-direct_message_sent_msg = '{"response": {"type": "ok", "message": "Direct message sent"}}'
-
-# Test message for response to request for all and new messages
-all_messages_msg = {
-  "response": {
-    "type": "ok",
-    "messages": [
-      {"message": "Hello User 1!", "from": "markb", "timestamp": "1603167689.3928561"},
-      {"message": "Bzzzzz", "from": "thebeemoviescript", "timestamp": "1603167689.3928561"}
-    ]
-  }
-}
+import socket
+import json
+import time
+server = "168.235.86.101"
+port = 3021
+timestamp = str(time.time())
 
 
-# Test message for invalid JSON
-invalid_json_msg = '{}'
 
-# Test the extract_json function with sample messages
-def test_extract_json():
-    assert ds_protocol.extract_json(direct_message_sent_msg) == ('ok', 'Direct message sent')
-    
-    assert ds_protocol.extract_json(all_messages_msg) == ('ok', [
-        {"message": "Hello User 1!", "from": "markb", "timestamp": "1603167689.3928561"},
-        {"message": "Bzzzzz", "from": "thebeemoviescript", "timestamp": "1603167689.3928561"}
-    ])
-    
-    assert ds_protocol.extract_json(invalid_json_msg) == None
-    print("extract_json works")
-    
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_conn:
+    server_conn.connect((server, port))
+    stuff = {}
+    stuff["join"] = {
+                    "username": "help",
+                    "password": "mog",
+                    "token": ""
+                }
+    print("joined")
+    data_str = json.dumps(stuff)
+    server_conn.sendall(data_str.encode())
+    response = server_conn.recv(3021).decode()
+    response_json = json.loads(response)
+    print(response_json)
+    if "token" in str(response_json):
+          temp = str(response_json).index("token")
+          token = str(response_json)[temp+9:-3]
+    formated = ({
+            "token": token,
+            "directmessage": {
+                "entry": "bruh",
+                "recipient": "greenmmm",
+                "timestamp": timestamp
+        }
+        })
+    data_str = json.dumps(formated)
 
-# Test message for JSON to dictionary conversion
-json_msg = '{"key": "value"}'
+    server_conn.sendall(data_str.encode())
 
-# Test the json_to_dict function
-def test_json_to_dict():
-    assert ds_protocol.json_to_dict(json_msg) == {'key': 'value'}
-    print("json_to_dict works")
+    response = server_conn.recv(3021).decode()
+    response_json = json.loads(response)
+    print(response_json)
 
-# Test message for JSON to list conversion
-json_list_msg = '[1, 2, 3]'
+    reciv = ({
+            "token": token,
+            "directmessage": "new"
+        })
+    data_str = json.dumps(reciv)
 
-# Test the json_to_list function
-def test_json_to_list():
-    assert ds_protocol.json_to_list(json_list_msg) == [1, 2, 3]
-    print(json_list_msg)
+    server_conn.sendall(data_str.encode())
 
-# Run all test functions
-def run_tests():
-    test_extract_json()
-    test_json_to_dict()
-    test_json_to_list()
+    response = server_conn.recv(3021).decode()
+    response_json = json.loads(response)
+    print(response_json)
 
-# Run the tests
-run_tests()
+
