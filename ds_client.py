@@ -67,7 +67,7 @@ def send(server:str, port:int, username:str, password:str, message:str, bio:str=
       response_json = json.loads(response)
       print(response_json)
       if "response" in response_json:
-                if response_json["response"]["type"] == "ok":
+                if response_json["response"]["type"] == "sent":
                     return True
                 else:
                     error_message = response_json["response"]["message"]
