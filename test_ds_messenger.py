@@ -3,6 +3,8 @@ import ds_protocol
 import socket
 import json
 import time
+from ds_messenger import *
+import Profile as prof
 server = "168.235.86.101"
 port = 3021
 timestamp = str(time.time())
@@ -26,43 +28,22 @@ def work():
         if "token" in str(response_json):
             temp = str(response_json).index("token")
             token = str(response_json)[temp+9:-3]
+        womp = DirectMessenger("168.235.86.101", "help", "mog")
+        #message =input()
+        username = womp.return_user()
+        password = womp.return_pass()
+        
+        usernm = prof.Profile(dsuserver= server, username = username, password = password)
+        womp.token = token
+
+        womp.send("gae", "green1")
+        womp.retrieve_all()
+        womp.retrieve_new()
+
+if __name__ == "__main__":
+    work()
+
 
         
-
-        formated = ({ #DirectMessage()
-        #formated.recip = "greenmmm"
-        #formated.mess = "womp"
-        #formated.time = timestamp
-        
-
-        #womp = DirectMessage("168.235.86.101", "help", "mog")
-        #womp.token = token
-        
-            "token": token,
-            "directmessage": {
-                "entry": "bruh",
-                "recipient": "greenmmm",
-                "timestamp": timestamp
-        }
-        })
-        data_str = json.dumps(formated)
-
-        server_conn.sendall(data_str.encode())
-
-        response = server_conn.recv(3021).decode()
-        response_json = json.loads(response)
-        print(response_json)
-
-        reciv = ({
-            "token": token,
-            "directmessage": "new"
-        })
-        data_str = json.dumps(reciv)
-
-        server_conn.sendall(data_str.encode())
-
-        response = server_conn.recv(3021).decode()
-        response_json = json.loads(response)
-        print(response_json)
 
 
