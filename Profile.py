@@ -83,6 +83,8 @@ class Profile:
     """
 
     def __init__(self, dsuserver=None, username=None, password=None, bio=None):
+        self.received_messages = []
+        self.sent_messages = []
         self.dsuserver = dsuserver # REQUIRED
         self.username = username # REQUIRED
         self.password = password # REQUIRED
@@ -98,7 +100,36 @@ class Profile:
     implement your add_post code.
 
     """
+    def save_messages(self, dict1):
+        for i in dict1:
+            self.received_messages.append(i)
 
+    def load_messages(self):
+        for i in self.received_messages:
+            print(i)
+
+    def save_sent(self, dict2):
+        self.sent_messages.append(dict2)
+        print(self.sent_messages)
+
+    def load_sent(self):
+        for i in self.sent_messages:
+            print(i)
+    
+    def save_profile(self, path: str) -> None:
+        p = Path(path)
+        if p.exists() and p.suffix == '.dsu':
+            try:
+                f = open(p, 'w')
+                json.dump(self.__dict__, f)
+                f.close()
+            except Exception as ex:
+                raise DsuFileError("Error while attempting"
+                                   "to process the DSU file.", ex)
+        else:
+            raise DsuFileError("Invalid DSU file path or type")
+
+    
     def add_post(self, post: Post) -> None:
         self._posts.append(post)
 

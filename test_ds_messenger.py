@@ -15,8 +15,8 @@ def work():
         server_conn.connect((server, port))
         stuff = {}
         stuff["join"] = {
-                    "username": "help",
-                    "password": "mog",
+                    "username": "cap",
+                    "password": "pog",
                     "token": ""
                 }
         print("joined")
@@ -28,7 +28,7 @@ def work():
         if "token" in str(response_json):
             temp = str(response_json).index("token")
             token = str(response_json)[temp+9:-3]
-        womp = DirectMessenger("168.235.86.101", "help", "mog")
+        womp = DirectMessenger("168.235.86.101", "cap", "pog")
         #message =input()
         username = womp.return_user()
         password = womp.return_pass()
@@ -36,7 +36,7 @@ def work():
         usernm = prof.Profile(dsuserver= server, username = username, password = password)
         womp.token = token
 
-        womp.send("lmans", "green1")
+        womp.send("bbbmans", "green1")
         womp.retrieve_all()
         womp.retrieve_new()
 
