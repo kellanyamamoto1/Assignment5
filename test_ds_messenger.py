@@ -36,14 +36,9 @@ def work():
         usernm = prof.Profile(dsuserver= server, username = username, password = password)
         womp.token = token
 
-        womp.send("gae", "green1")
+        womp.send("lmans", "green1")
         womp.retrieve_all()
         womp.retrieve_new()
 
 if __name__ == "__main__":
     work()
-
-
-        
-
-
