@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
 from typing import Text
+import socket
+import json
+import time
+timestamp = str(time.time())
 
 
 class Body(tk.Frame):
@@ -98,6 +102,8 @@ class Footer(tk.Frame):
         # Here you must configure the button to bind its click to
         # the send_click() function.
         save_button.pack(fill=tk.BOTH, side=tk.RIGHT, padx=5, pady=5)
+
+        save_button.bind("<Button-1>", lambda event: self.send_click())
 
         self.footer_label = tk.Label(master=self, text="Ready.")
         self.footer_label.pack(fill=tk.BOTH, side=tk.LEFT, padx=5)

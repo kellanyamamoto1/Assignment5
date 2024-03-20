@@ -108,9 +108,11 @@ class Profile:
         for i in self.received_messages:
             print(i)
 
+    def del_messages(self):
+        self.received_messages.clear()
 
-    def save_sent(self, dict2):
-        self.sent_messages.append(dict2)
+    def save_sent(self, message):
+        self.sent_messages.append(message)
         print(self.sent_messages)
 
     def load_sent(self):
@@ -121,8 +123,15 @@ class Profile:
         p = Path(path)
         if p.exists() and p.suffix == '.dsu':
             try:
+                profile_data = {
+                'username': self.username,
+                'password': self.password,
+                'dsuserver': self.dsuserver,
+                'received_messages': self.received_messages,
+                'sent_messages': self.sent_messages
+                }
                 f = open(p, 'w')
-                json.dump(self.__dict__, f)
+                json.dump(profile_data, f)
                 f.close()
             except Exception as ex:
                 raise DsuFileError("Error while attempting"

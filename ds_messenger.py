@@ -46,6 +46,18 @@ class DirectMessenger:
             print("Invalid response from server")
             return False
         
+  def send_format(self, message:str, recipient:str) -> bool:
+            formated = ({
+                "token": self.token,
+                "directmessage": {
+                    "entry": message,
+                    "recipient": recipient,
+                    'timestamp': timestamp
+                }
+                })
+            data_str = formated
+            return(data_str)
+        
 
 		
   def retrieve_new(self) -> list:
