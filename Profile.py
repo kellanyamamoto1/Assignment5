@@ -108,6 +108,7 @@ class Profile:
         for i in self.received_messages:
             print(i)
 
+
     def save_sent(self, dict2):
         self.sent_messages.append(dict2)
         print(self.sent_messages)
