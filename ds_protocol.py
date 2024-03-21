@@ -1,6 +1,7 @@
 # ds_protocol.py
 
-# Starter code for assignment 3 in ICS 32 Programming with Software Libraries in Python
+# Starter code for assignment 3 in ICS 32 Programming with Software
+# Libraries in Python
 
 # Replace the following placeholders with your information.
 
@@ -8,12 +9,13 @@
 # EMAIL
 # STUDENT ID
 
+import test_ds_message_protocol
 import json
 import time
 from collections import namedtuple
 timestamp = str(time.time())
 DataTuple = namedtuple('DataTuple', ['type', 'message'])
-import test_ds_message_protocol
+
 
 def json_to_dict(json_msg: str) -> dict:
     """
@@ -24,6 +26,7 @@ def json_to_dict(json_msg: str) -> dict:
     except json.JSONDecodeError:
         print("Json cannot be decoded.1")
         return {}
+
 
 def json_to_list(json_msg: str) -> list:
     """
@@ -38,7 +41,8 @@ def json_to_list(json_msg: str) -> list:
 
 def extract_json(json_msg: str) -> DataTuple:
     '''
-    Call the json.loads function on a json string and convert it to a DataTuple object
+    Call the json.loads function on a
+    json string and convert it to a DataTuple object
     '''
     try:
         json_obj = json.loads(json_msg)
@@ -51,17 +55,24 @@ def extract_json(json_msg: str) -> DataTuple:
     return None
 
 
-def format_for_json(action, username, password, user_token=None, message=None, bio=None, recipient=None):
-  formated = None
-  if action == "join":
-    formated = json.dumps({
-      "join": {
-        "username": username,
-        "password": password,
-        "tokens": user_token
-      }
-    })
-  elif action == 'post':
+def format_for_json(
+        action,
+        username,
+        password,
+        user_token=None,
+        message=None,
+        bio=None,
+        recipient=None):
+    formated = None
+    if action == "join":
+        formated = json.dumps({
+            "join": {
+                "username": username,
+                "password": password,
+                "tokens": user_token
+            }
+        })
+    elif action == 'post':
         if not user_token:
             raise ValueError("no user token1")
         formated = ({
@@ -71,7 +82,7 @@ def format_for_json(action, username, password, user_token=None, message=None, b
                 "timestamp": timestamp
             }
         })
-  elif action == 'bio':
+    elif action == 'bio':
         if not user_token:
             raise ValueError("no user token2")
         formated = json.dumps({
@@ -81,7 +92,7 @@ def format_for_json(action, username, password, user_token=None, message=None, b
                 "timestamp": timestamp
             }
         })
-  elif action == 'directmessage':
+    elif action == 'directmessage':
         if not user_token:
             raise ValueError("no user token3")
         if message:
@@ -94,5 +105,4 @@ def format_for_json(action, username, password, user_token=None, message=None, b
                 }
             })
 
-  return formated
-  
+    return formated

@@ -16,10 +16,10 @@ def work():
         server_conn.connect((server, port))
         stuff = {}
         stuff["join"] = {
-                    "username": "cap",
-                    "password": "pog",
-                    "token": ""
-                }
+            "username": "cap",
+            "password": "pog",
+            "token": ""
+        }
         print("joined")
         data_str = json.dumps(stuff)
         server_conn.sendall(data_str.encode())
@@ -28,12 +28,12 @@ def work():
         print(response_json)
         if "token" in str(response_json):
             temp = str(response_json).index("token")
-            token = str(response_json)[temp+9:-3]
+            token = str(response_json)[temp + 9:-3]
         womp = DirectMessenger("168.235.86.101", "cap", "pog")
         person = prof.Profile("168.235.86.101", 'cap', 'pog')
         currrent_dir = pathlib.Path.cwd()
         path = f"{currrent_dir}\\profile.dsu"
-        #message =input()
+        # message =input()
         username = womp.return_user()
         password = womp.return_pass()
         if not pathlib.Path(path).exists():
@@ -41,7 +41,10 @@ def work():
                 person.save_profile(path)
         else:
             person.load_profile(path)
-        usernm = prof.Profile(dsuserver= server, username = username, password = password)
+        usernm = prof.Profile(
+            dsuserver=server,
+            username=username,
+            password=password)
         womp.token = token
         person.save_messages(womp.retrieve_all_string())
         womp.send("bbbmans", "green1")
@@ -51,10 +54,10 @@ def work():
         womp.retrieve_all()
         womp.retrieve_new()
 
-        #delete messages in dsu
+        # delete messages in dsu
         # person.del_messages()
         # person.del_sent()
-        
+
 
 if __name__ == "__main__":
     work()

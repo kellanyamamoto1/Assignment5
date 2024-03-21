@@ -12,6 +12,7 @@ server_port = "3021"
 administrator = False
 temp_path = ''
 
+
 def start():
     ui.administration(1)
     ui.handle_command()
@@ -70,7 +71,6 @@ def handle_command():
             edit_file(command)
         elif command_type == "P":
             print_data(command)
-        
 
 
 def file_sort(a, b):
@@ -120,6 +120,7 @@ def list_files(a):
         print("OUTPUT:\n")
         list_items(path, recursive, files_only, search_file, ending)
 
+
 def list_files_command(command):
     command_parts = command.split()
     paths = command_parts[1:]
@@ -139,10 +140,15 @@ def list_files_command(command):
     list_items(path, recursive, files_only, search_file, ending)
 
 
-def list_items(path, recursive=False, files_only=False, search_file=None, ending=None):
+def list_items(
+        path,
+        recursive=False,
+        files_only=False,
+        search_file=None,
+        ending=None):
     try:
         l = Path(path).iterdir()
-        
+
         files = file_sort(l, path)
         dirs = dir(l, path)
 
@@ -157,12 +163,27 @@ def list_items(path, recursive=False, files_only=False, search_file=None, ending
             for directory in dirs:
                 if not files_only and directory.is_dir():
                     if ending is not None:
-                        list_items(directory, recursive, files_only, search_file, ending)
+                        list_items(
+                            directory,
+                            recursive,
+                            files_only,
+                            search_file,
+                            ending)
                     else:
                         print(directory)
-                        list_items(directory, recursive, files_only, search_file, ending)
+                        list_items(
+                            directory,
+                            recursive,
+                            files_only,
+                            search_file,
+                            ending)
                 elif files_only and directory.is_dir():
-                    list_items(directory, recursive, files_only, search_file, ending)
+                    list_items(
+                        directory,
+                        recursive,
+                        files_only,
+                        search_file,
+                        ending)
         elif not files_only and ending is None:
             for directory in dirs:
                 print(directory)
@@ -186,15 +207,16 @@ def create_file(a):
                 username = None
                 password = None
                 bio = None
-                profile = Profile(username = username, password = password, bio = bio)
-                with open(filepath,'a') as f:
+                profile = Profile(
+                    username=username, password=password, bio=bio)
+                with open(filepath, 'a') as f:
                     print("")
-                f = open(filepath,'a')
-                profile.save_profile(path = filepath)
+                f = open(filepath, 'a')
+                profile.save_profile(path=filepath)
                 print(f'{filepath} OPENED')
                 temp_path = filepath
         print(f"TEMP PATH:  {temp_path}")
-        return temp_path        
+        return temp_path
     else:
         file_path = user_mod.get_path()
         file_name = user_mod.file_name()
@@ -202,7 +224,7 @@ def create_file(a):
         username = input("Enter Username:  ")
         password = input("Enter Password:  ")
         bio = input("Enter bio: ")
-        profile = Profile(username = username, password = password, bio = bio)
+        profile = Profile(username=username, password=password, bio=bio)
         print(line + "      CREATED")
         with open(line, 'a') as f:
             a = "Username: " + username + '\n'
@@ -211,7 +233,7 @@ def create_file(a):
             f.write(b)
             c = "Bio: " + bio + '\n'
             f.write(c)
-        profile.save_profile(path = line)
+        profile.save_profile(path=line)
         f = open(line, 'a')
         temp_path = file_path
     print(f'{file_path} OPENED')
@@ -280,7 +302,7 @@ def read_file(a):
                     else:
                         print("EMPTY")
             elif not check_file(path):
-                print("no file exists") 
+                print("no file exists")
         else:
             print("please enter a file with \".dsu\" extention")
     print("")
@@ -307,7 +329,7 @@ def open_file(a):
             print(line.strip())
     handle_command()
     return temp_path
-        
+
 
 def edit_file(a):
     if administrator:
@@ -319,10 +341,10 @@ def edit_file(a):
             end_quote = a.find('"', start_quote + 1)
             if start_quote != -1 and end_quote != -1:
                 bio = a[start_quote + 1:end_quote]
-        
+
         profile = Profile()
-        profile.load_profile(path = temp_path)
-        
+        profile.load_profile(path=temp_path)
+
         if '-user' in lis:
             usr_index = lis.index('-user')
             new_usr = ' '.join(lis[usr_index + 1:]).strip('"')
@@ -336,7 +358,7 @@ def edit_file(a):
             profile.save_profile(temp_path)
         if '-pwd' in lis:
             pwd_index = lis.index('-pwd')
-            new_pwd= lis[pwd_index + 1]
+            new_pwd = lis[pwd_index + 1]
             profile.password = new_pwd.strip('"')
             profile.save_profile(temp_path)
         if '-bio' in lis:
@@ -346,7 +368,7 @@ def edit_file(a):
         profile = Profile()
         print("please enter a dsu file path")
         temp_path = input()
-        profile.load_profile(path = temp_path)
+        profile.load_profile(path=temp_path)
         print("what would you like to edit?")
         print("\"-user\" to update the username")
         print("\"-pwd\" to update password")
@@ -373,7 +395,7 @@ def edit_file(a):
                 Fire = WEA.OpenWeather(zipc, cc)
                 Fire.set_apikey("ceb8cbc931c2f41301ba4a1548020fd4")
                 Fire.load_data()
-                post_content = Fire.transclude(post_content)   
+                post_content = Fire.transclude(post_content)
             if "@L" in post_content or "@l" in post_content:
                 alb = input("Enter Album Song Album: ")
                 art = input("Enter Artist: ")
@@ -381,9 +403,9 @@ def edit_file(a):
                 Water.set_artist_album(art, alb)
                 Water.setFMapi("7cd2ee13dc3b0100dae94c5c7401df50")
                 Water.loadFMdata()
-                #print(Water.loadFMdata())
+                # print(Water.loadFMdata())
                 post_content = Water.transclude(post_content)
-                
+
             new_post = Post(post_content)
             profile.add_post(new_post)
             profile.save_profile(temp_path)
@@ -401,7 +423,7 @@ def edit_file(a):
 
 def print_data(command):
     global temp_path
-    
+
     options = command.split()[1:]
 
     profile = Profile()
@@ -432,6 +454,6 @@ def print_data(command):
             print(f"  Post {i}: {post}")
     handle_command()
 
-if __name__ == "__main__":
-    start()   
 
+if __name__ == "__main__":
+    start()
